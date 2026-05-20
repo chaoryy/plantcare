@@ -1,4 +1,3 @@
-// src/api/client.js
 import axios from "axios";
 import {
   MOCK_COLLECTION,
@@ -8,13 +7,10 @@ import {
   MOCK_SCHEDULE,
 } from "../mock/mockData";
 
-// ─── переключатель ───────────────────────────────────────
 export const USE_MOCK = true;
 
-// ─── задержка для имитации сети ──────────────────────────
 const delay = (ms = 600) => new Promise((res) => setTimeout(res, ms));
 
-// ─── axios instance ──────────────────────────────────────
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   timeout: 10000,
@@ -37,7 +33,6 @@ api.interceptors.response.use(
   },
 );
 
-// ─── Auth ─────────────────────────────────────────────────
 export const authAPI = {
   register: async (data) => {
     if (USE_MOCK) {
@@ -56,7 +51,6 @@ export const authAPI = {
   },
 };
 
-// ─── Plants ───────────────────────────────────────────────
 export const plantsAPI = {
   identify: async (imageFile) => {
     if (USE_MOCK) {
