@@ -1,0 +1,122 @@
+// src/api/client.js
+import axios from "axios";
+import {
+  MOCK_COLLECTION,
+  MOCK_DIAGNOSE,
+  MOCK_IDENTIFY,
+  MOCK_RECOMMEND,
+  MOCK_SCHEDULE,
+} from "../mock/mockData";
+
+// ─── переключатель ───────────────────────────────────────
+export const USE_MOCK = true;
+
+// ─── задержка для имитации сети ──────────────────────────
+const delay = (ms = 600) => new Promise((res) => setTimeout(res, ms));
+
+// ─── axios instance ──────────────────────────────────────
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+  timeout: 10000,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(err);
+  },
+);
+
+// ─── Auth ─────────────────────────────────────────────────
+export const authAPI = {
+  register: async (data) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: { token: "mock-token-123" } };
+    }
+    return api.post("/api/auth/register", data);
+  },
+
+  login: async (data) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: { token: "mock-token-123" } };
+    }
+    return api.post("/api/auth/login", data);
+  },
+};
+
+// ─── Plants ───────────────────────────────────────────────
+export const plantsAPI = {
+  identify: async (imageFile) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_IDENTIFY };
+    }
+    const form = new FormData();
+    form.append("image", imageFile);
+    form.append("type", "identify");
+    return api.post("/api/plants/analyze", form);
+  },
+
+  diagnose: async (imageFile) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_DIAGNOSE };
+    }
+    const form = new FormData();
+    form.append("image", imageFile);
+    form.append("type", "diagnose");
+    return api.post("/api/plants/diagnose", form); // ← был пропущен /
+  },
+
+  recommend: async (conditions) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_RECOMMEND };
+    }
+    return api.post("/api/plants/recommend", { conditions });
+  },
+
+  getCollection: async () => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_COLLECTION };
+    }
+    return api.get("/api/plants/collection");
+  },
+
+  addToCollection: async (plantData) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: { id: "plant_new", status: "ok" } };
+    }
+    return api.post("/api/plants/collection", plantData);
+  },
+
+  deleteFromCollection: async (id) => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: { status: "deleted" } };
+    }
+    return api.delete(`/api/plants/collection/${id}`);
+  },
+
+  getSchedule: async () => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_SCHEDULE };
+    }
+    return api.get("/api/plants/schedule");
+  },
+};
