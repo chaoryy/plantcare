@@ -47,7 +47,7 @@ export default function Layout() {
         <div className={styles.bottom}>
           <button className={styles.logoutBtn} onClick={handleLogout}>
             <i className="ti ti-logout" />
-            <span>Выйти</span>
+            <span>Log Out</span>
           </button>
         </div>
       </aside>
