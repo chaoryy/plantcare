@@ -64,8 +64,8 @@ Includes:
 ---
 
 ## Team Roles
-- Product Manager — planning, tasks, sprint organization
-- Frontend Developer — UI implementation
-- Backend Developer — API and database
-- AI Engineer — image recognition and AI logic
-- DevSecOps Engineer — deployment and infrastructure
+- Product Manager - planning, tasks, sprint organization
+- Frontend Developer - UI implementation
+- Backend Developer - API and database
+- AI Engineer - image recognition and AI logic
+- DevSecOps Engineer - deployment and infrastructure
