@@ -6,6 +6,7 @@ import Layout from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Identify from "./pages/Identify/Identify";
 import Diagnose from "./pages/Diagnose/Diadnose";
+import Collection from "./pages/Collection/Collection";
 
 function PrivateRoute({ children }) {
   return children;
@@ -28,7 +29,7 @@ function AppRoutes() {
         <Route path="recommend" element={<div>Тут будет Recommend ✨</div>} />
         <Route
           path="collection"
-          element={<div>Тут будет My Collection 🪴</div>}
+          element={<Collection />}
         />
         <Route path="schedule" element={<div>Тут будет Calendar 📅</div>} />
       </Route>
