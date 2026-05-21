@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.97.1"
+    "@anthropic-ai/sdk": "^0.97.1",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.4.2"
   }
 }
