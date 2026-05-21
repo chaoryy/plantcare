@@ -8,9 +8,9 @@ import styles from "../../styles/Dashboard.module.css";
 
 function getGreeting() {
   const hour = new Date().getHours();
-  if (hour < 12) return "Good Morning";
-  if (hour < 18) return "Good Afternoon";
-  return "Good Evening";
+  if (hour < 12) return "Доброе утро";
+  if (hour < 18) return "Добрый день";
+  return "Добрый вечер";
 }
 
 export default function Dashboard() {
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
   const weatherIcon = weather?.icon ?? "ti-cloud";
 
-  if (loading) return <p className={styles.loading}>Loading...</p>;
+  if (loading) return <p className={styles.loading}>Загрузка...</p>;
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default function Dashboard() {
             {getGreeting()}, {user?.name}
           </h1>
           <p className={styles.date}>
-            {new Date().toLocaleDateString("en-EN", {
+            {new Date().toLocaleDateString("ru-RU", {
               weekday: "long",
               day: "numeric",
               month: "long",
@@ -65,26 +65,17 @@ export default function Dashboard() {
       </div>
 
       <div className={styles.stats}>
-        <StatCard label="Plants" value={plants.length} icon="ti-plant-2" />
-        <StatCard label="Water today" value={needWater} icon="ti-droplet" />
-        <StatCard
-          label="Need attention"
-          value={sick}
-          icon="ti-alert-triangle"
-        />
-        <StatCard
-          label="Weather"
-          value={weatherValue}
-          icon={weatherIcon}
-          sub={weatherSub}
-        />
+        <StatCard label="Растения" value={plants.length} icon="ti-plant-2" />
+        <StatCard label="Полить сегодня" value={needWater} icon="ti-droplet" />
+        <StatCard label="Нужно внимание" value={sick} icon="ti-alert-triangle"/>
+        <StatCard label="Погода" value={weatherValue} icon={weatherIcon} sub={weatherSub}/>
       </div>
 
-      <h2 className={styles.sectionTitle}>My Plants</h2>
+      <h2 className={styles.sectionTitle}>Мои растения</h2>
 
       {plants.length === 0 ? (
         <p className={styles.empty}>
-          There are no plants yet. Add the first one!
+          У вас пока растений. Добавьте первое растение!
         </p>
       ) : (
         <div className={styles.grid}>

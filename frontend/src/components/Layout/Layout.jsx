@@ -3,12 +3,12 @@ import { useAuth } from "../../context/AuthContext";
 import styles from "./Layout.module.css";
 
 const NAV_ITEMS = [
-  { path: "/", icon: "ti-layout-dashboard", label: "Home" },
-  { path: "/identify", icon: "ti-camera", label: "Identify type" },
-  { path: "/diagnose", icon: "ti-stethoscope", label: "Diagnostics" },
-  { path: "/recommend", icon: "ti-sparkles", label: "Recommend plant" },
-  { path: "/collection", icon: "ti-plant-2", label: "My collection" },
-  { path: "/schedule", icon: "ti-calendar", label: "Calendar" },
+  { path: "/", icon: "ti-layout-dashboard", label: "Главная" },
+  { path: "/identify", icon: "ti-camera", label: "Определить вид" },
+  { path: "/diagnose", icon: "ti-stethoscope", label: "Диагностика" },
+  { path: "/recommend", icon: "ti-sparkles", label: "Подобрать растение" },
+  { path: "/collection", icon: "ti-plant-2", label: "Моя коллекция" },
+  { path: "/schedule", icon: "ti-calendar", label: "График полива" },
 ];
 
 export default function Layout() {
@@ -47,7 +47,7 @@ export default function Layout() {
         <div className={styles.bottom}>
           <button className={styles.logoutBtn} onClick={handleLogout}>
             <i className="ti ti-logout" />
-            <span>Log Out</span>
+            <span>Выйти</span>
           </button>
         </div>
       </aside>

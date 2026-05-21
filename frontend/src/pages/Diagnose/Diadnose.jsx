@@ -1,13 +1,12 @@
-// src/pages/Diagnose/Diagnose.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { plantsAPI } from "../../api/client";
 import UploadZone from "../../components/UploadZone/UploadZone";
 import Loader from "../../components/Loader/Loader";
+import ErrorModal from "../../components/ErrorModal/ErrorModal"; 
 import styles from "../../styles/Diagnose.module.css";
 
 const SEVERITY_CLS = { лёгкая: "low", средняя: "mid", высокая: "high" };
-
 const PROBLEM_ICONS = {
   клещ: "ti-bug",
   гниль: "ti-droplet-off",
@@ -29,20 +28,22 @@ export default function Diagnose() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(""); 
   const navigate = useNavigate();
 
   const handleDiagnose = async () => {
     if (!file) return;
     setLoading(true);
-    setError(null);
+    setErrorMsg("");
     setResult(null);
     setSaved(false);
     try {
       const res = await plantsAPI.diagnose(file);
       setResult(res.data);
     } catch {
-      setError("Не удалось провести диагностику. Попробуйте другое фото.");
+      setErrorMsg(
+        "Не удалось провести диагностику со стороны сервера. Попробуйте другое фото.",
+      );
     } finally {
       setLoading(false);
     }
@@ -61,7 +62,7 @@ export default function Diagnose() {
       setSaved(true);
       setTimeout(() => navigate("/collection"), 1500);
     } catch {
-      setError("Не удалось сохранить растение.");
+      setErrorMsg("Не удалось сохранить больное растение в коллекцию.");
     } finally {
       setSaving(false);
     }
@@ -90,7 +91,6 @@ export default function Diagnose() {
       </button>
 
       {loading && <Loader text="AI ищет проблемы..." />}
-      {error && <p className={styles.error}>{error}</p>}
 
       {result && (
         <div className={styles.result}>
@@ -103,7 +103,6 @@ export default function Diagnose() {
 
           <div className={styles.problemHeader}>
             <div className={styles.problemIcon}>
-              {/* иконка теперь динамическая */}
               <i className={`ti ${problemIcon}`} aria-hidden="true" />
             </div>
             <div>
@@ -162,6 +161,13 @@ export default function Diagnose() {
           </div>
         </div>
       )}
+
+      <ErrorModal
+        isOpen={errorMsg !== ""}
+        title="Ошибка диагностики"
+        message={errorMsg}
+        onClose={() => setErrorMsg("")}
+      />
     </div>
   );
 }

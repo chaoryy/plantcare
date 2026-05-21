@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { plantsAPI } from "../../api/client";
 import UploadZone from "../../components/UploadZone/UploadZone";
 import Loader from "../../components/Loader/Loader";
+import ErrorModal from "../../components/ErrorModal/ErrorModal";
 import styles from "../../styles/Identify.module.css";
 
 export default function Identify() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
@@ -17,13 +18,15 @@ export default function Identify() {
   const handleAnalyze = async () => {
     if (!file) return;
     setLoading(true);
-    setError(null);
+    setErrorMsg("");
     setResult(null);
     try {
       const res = await plantsAPI.identify(file);
       setResult(res.data);
     } catch {
-      setError("Unable to identify the plant. Try a different photo.");
+      setErrorMsg(
+        "Не получилось сделать анализ фото. Проверьте соединение или попробуйте другое фото.",
+      );
     } finally {
       setLoading(false);
     }
@@ -34,14 +37,14 @@ export default function Identify() {
     setSaving(true);
     try {
       await plantsAPI.addToCollection({
-        name: result.name,
+        plant_name: result.name,
         latin: result.latin,
         photo_url: null,
       });
       setSaved(true);
       setTimeout(() => navigate("/collection"), 1500);
     } catch {
-      setError("Failed to save the plant.");
+      setErrorMsg("Не получлось сохранить растение. Попробуйте еще раз позже.");
     } finally {
       setSaving(false);
     }
@@ -49,9 +52,9 @@ export default function Identify() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Identify Plant</h1>
+      <h1 className={styles.title}>Определить вид</h1>
       <p className={styles.sub}>
-        Upload a photo – AI will identify the species with up to 95% accuracy
+        Загрузи фото — AI определит вид с точностью до 95%
       </p>
 
       <UploadZone onFileSelect={setFile} />
@@ -62,12 +65,10 @@ export default function Identify() {
         disabled={!file || loading}
       >
         <i className="ti ti-sparkles" aria-hidden="true" />
-        {loading ? "Analyzing..." : "Define"}
+        {loading ? "Анализирую..." : "Определить"}
       </button>
 
-      {loading && <Loader text="AI analyzes photos..." />}
-
-      {error && <p className={styles.error}>{error}</p>}
+      {loading && <Loader text="AI анализирует фото..." />}
 
       {result && (
         <div className={styles.result}>
@@ -78,11 +79,11 @@ export default function Identify() {
             <div>
               <h2 className={styles.plantName}>{result.name}</h2>
               <p className={styles.plantLatin}>
-                {result.latin} · confidence {result.confidence}%
+                {result.latin} · уверенность {result.confidence}%
               </p>
             </div>
             <span className={styles.confBadge}>
-              <i className="ti ti-check" /> Defined
+              <i className="ti ti-check" /> Определено
             </span>
           </div>
 
@@ -91,17 +92,17 @@ export default function Identify() {
           <div className={styles.careGrid}>
             <div className={styles.careItem}>
               <i className="ti ti-droplet" aria-hidden="true" />
-              <span className={styles.careLabel}>Watering</span>
+              <span className={styles.careLabel}>Полив</span>
               <span className={styles.careVal}>{result.care.water}</span>
             </div>
             <div className={styles.careItem}>
               <i className="ti ti-sun" aria-hidden="true" />
-              <span className={styles.careLabel}>Light</span>
+              <span className={styles.careLabel}>Свет</span>
               <span className={styles.careVal}>{result.care.light}</span>
             </div>
             <div className={styles.careItem}>
               <i className="ti ti-temperature" aria-hidden="true" />
-              <span className={styles.careLabel}>Temperature</span>
+              <span className={styles.careLabel}>Температура</span>
               <span className={styles.careVal}>{result.care.temperature}</span>
             </div>
           </div>
@@ -109,7 +110,7 @@ export default function Identify() {
           {saved ? (
             <div className={styles.savedMsg}>
               <i className="ti ti-check" aria-hidden="true" />
-              Added to the collection! Let's move on.
+              Добавлено в коллекцию.
             </div>
           ) : (
             <button
@@ -121,11 +122,18 @@ export default function Identify() {
                 className={`ti ${saving ? "ti-loader" : "ti-plus"}`}
                 aria-hidden="true"
               />
-              {saving ? "Saving..." : "Add to collection"}
+              {saving ? "Сохраняю..." : "Добавить в коллекцию"}
             </button>
           )}
         </div>
       )}
+
+      <ErrorModal
+        isOpen={errorMsg !== ""}
+        title="Ошибка идентификации"
+        message={errorMsg}
+        onClose={() => setErrorMsg("")}
+      />
     </div>
   );
 }
