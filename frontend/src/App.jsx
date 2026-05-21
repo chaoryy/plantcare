@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Identify from "./pages/Identify/Identify";
 import Diagnose from "./pages/Diagnose/Diadnose";
 import Collection from "./pages/Collection/Collection";
+import Recommend from "./pages/Recommend/Recommend";
 
 function PrivateRoute({ children }) {
   return children;
@@ -26,7 +27,7 @@ function AppRoutes() {
         <Route index element={<Dashboard />} />
         <Route path="identify" element={<Identify />} />
         <Route path="diagnose" element={<Diagnose />} />
-        <Route path="recommend" element={<div>Тут будет Recommend ✨</div>} />
+        <Route path="recommend" element={<Recommend/>} />
         <Route
           path="collection"
           element={<Collection />}
