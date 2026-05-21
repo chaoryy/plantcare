@@ -5,7 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Identify from "./pages/Identify/Identify";
-
+import Diagnose from "./pages/Diagnose/Diadnose";
 
 function PrivateRoute({ children }) {
   return children;
@@ -24,7 +24,7 @@ function AppRoutes() {
       >
         <Route index element={<Dashboard />} />
         <Route path="identify" element={<Identify />} />
-        <Route path="diagnose" element={<div>Тут будет Diagnostics 🩺</div>} />
+        <Route path="diagnose" element={<Diagnose />} />
         <Route path="recommend" element={<div>Тут будет Recommend ✨</div>} />
         <Route
           path="collection"

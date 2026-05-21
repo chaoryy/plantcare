@@ -25,17 +25,16 @@ let mockPlants = [
   },
 ];
 
-
 export const getMockCollection = () => ({ plants: [...mockPlants] });
 
 export const addMockPlant = (plantData) => {
   const newPlant = {
     id: `plant_${Date.now()}`,
-    name:       plantData.plant_name,
-    latin:      plantData.latin ?? "",
-    photo_url:  plantData.photo_url ?? null,
+    name: plantData.plant_name,
+    latin: plantData.latin ?? "",
+    photo_url: plantData.photo_url ?? null,
     next_water: plantData.next_water ?? new Date().toISOString().slice(0, 10),
-    status:     "healthy",
+    status: "healthy",
   };
   mockPlants.push(newPlant);
   return { id: newPlant.id, status: "ok" };
@@ -59,6 +58,9 @@ export const MOCK_IDENTIFY = {
 };
 
 export const MOCK_DIAGNOSE = {
+  name: "Фикус Бенджамина",
+  latin: "Ficus benjamina",
+  confidence: 87,
   problem: "Паутинный клещ",
   severity: "средняя",
   symptoms: [

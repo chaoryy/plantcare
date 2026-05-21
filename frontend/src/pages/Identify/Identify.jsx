@@ -34,7 +34,7 @@ export default function Identify() {
     setSaving(true);
     try {
       await plantsAPI.addToCollection({
-        plant_name: result.name,
+        name: result.name,
         latin: result.latin,
         photo_url: null,
       });

@@ -75,7 +75,7 @@ export const plantsAPI = {
     const form = new FormData();
     form.append("image", imageFile);
     form.append("type", "diagnose");
-    return api.post("/api/plants/diagnose", form); // ← был пропущен /
+    return api.post("/api/plants/diagnose", form); 
   },
 
   recommend: async (conditions) => {
@@ -89,7 +89,7 @@ export const plantsAPI = {
   getCollection: async () => {
     if (USE_MOCK) {
       await delay();
-      return { data: getMockCollection() }; // ← вызов функции, не константа
+      return { data: getMockCollection() }; 
     }
     return api.get("/api/plants/collection");
   },
@@ -105,7 +105,7 @@ export const plantsAPI = {
   deleteFromCollection: async (id) => {
     if (USE_MOCK) {
       await delay();
-      return { data: deleteMockPlant(id) }; // ← реально удаляет
+      return { data: deleteMockPlant(id) }; 
     }
     return api.delete(`/api/plants/collection/${id}`);
   },
