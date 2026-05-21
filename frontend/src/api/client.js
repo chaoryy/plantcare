@@ -1,10 +1,14 @@
 import axios from "axios";
 import {
-  MOCK_COLLECTION,
+  getMockCollection,
+  addMockPlant,
+  deleteMockPlant,
   MOCK_DIAGNOSE,
   MOCK_IDENTIFY,
   MOCK_RECOMMEND,
   MOCK_SCHEDULE,
+  MOCK_USER,
+  MOCK_WEATHER,
 } from "../mock/mockData";
 
 export const USE_MOCK = true;
@@ -85,7 +89,7 @@ export const plantsAPI = {
   getCollection: async () => {
     if (USE_MOCK) {
       await delay();
-      return { data: MOCK_COLLECTION };
+      return { data: getMockCollection() }; // ← вызов функции, не константа
     }
     return api.get("/api/plants/collection");
   },
@@ -93,7 +97,7 @@ export const plantsAPI = {
   addToCollection: async (plantData) => {
     if (USE_MOCK) {
       await delay();
-      return { data: { id: "plant_new", status: "ok" } };
+      return { data: addMockPlant(plantData) };
     }
     return api.post("/api/plants/collection", plantData);
   },
@@ -101,7 +105,7 @@ export const plantsAPI = {
   deleteFromCollection: async (id) => {
     if (USE_MOCK) {
       await delay();
-      return { data: { status: "deleted" } };
+      return { data: deleteMockPlant(id) }; // ← реально удаляет
     }
     return api.delete(`/api/plants/collection/${id}`);
   },
@@ -112,5 +116,31 @@ export const plantsAPI = {
       return { data: MOCK_SCHEDULE };
     }
     return api.get("/api/plants/schedule");
+  },
+};
+
+export const userAPI = {
+  getMe: async () => {
+    if (USE_MOCK) {
+      await delay();
+      return { data: MOCK_USER };
+    }
+    return api.get("/api/auth/me");
+  },
+};
+
+export const weatherAPI = {
+  getByCity: async (city) => {
+    if (USE_MOCK) {
+      await delay(300);
+      return {
+        data: {
+          ...MOCK_WEATHER,
+          city: city,
+          temp: city === "Москва" ? 15 : 28,
+        },
+      };
+    }
+    return api.get("/api/weather", { params: { city } });
   },
 };

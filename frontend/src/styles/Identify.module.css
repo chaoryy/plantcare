@@ -1,0 +1,167 @@
+.page {
+  max-width: 680px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+.sub {
+  font-size: 13px;
+  color: var(--text-gray);
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--green-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn i {
+  font-size: 16px;
+}
+
+.error {
+  color: var(--red);
+  font-size: 13px;
+  background: #fef2f2;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.result {
+  background: var(--white);
+  border: 0.5px solid #e5e7eb;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.resultIcon {
+  width: 48px;
+  height: 48px;
+  background: #eaf3de;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.resultIcon i {
+  font-size: 24px;
+  color: var(--green-dark);
+}
+
+.plantName {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+.plantLatin {
+  font-size: 12px;
+  color: var(--text-gray);
+  font-style: italic;
+}
+
+.confBadge {
+  margin-left: auto;
+  background: #eaf3de;
+  color: #27500a;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.desc {
+  font-size: 13px;
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.careGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.careItem {
+  background: #f9fafb;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.careItem i {
+  font-size: 20px;
+  color: var(--green-dark);
+}
+.careLabel {
+  font-size: 11px;
+  color: var(--text-gray);
+}
+.careVal {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  background: var(--green-dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+.saveBtn:disabled {
+  background: var(--green-light);
+  cursor: default;
+}
+.saveBtn i {
+  font-size: 15px;
+}
+
+.savedMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #EAF3DE;
+  color: #27500A;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+.savedMsg i { font-size: 16px; }

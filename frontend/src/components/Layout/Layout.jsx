@@ -25,7 +25,7 @@ export default function Layout() {
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
           <i className="ti ti-leaf" />
-          <span>PlantCare AI</span>
+          <span>PlantCare</span>
         </div>
 
         <nav className={styles.nav}>

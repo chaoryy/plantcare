@@ -3,9 +3,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout/Layout";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Identify from "./pages/Identify/Identify";
 
 
-// Временный PrivateRoute, который всегда пропускает, пока мы верстаем лендинг
 function PrivateRoute({ children }) {
   return children;
 }
@@ -13,7 +14,6 @@ function PrivateRoute({ children }) {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Наш Layout и дочерние страницы внутри него */}
       <Route
         path="/"
         element={
@@ -22,8 +22,8 @@ function AppRoutes() {
           </PrivateRoute>
         }
       >
-        <Route index element={<div>Тут будет Dashboard 🌿</div>} />
-        <Route path="identify" element={<div>Тут будет Identify 📷</div>} />
+        <Route index element={<Dashboard />} />
+        <Route path="identify" element={<Identify />} />
         <Route path="diagnose" element={<div>Тут будет Diagnostics 🩺</div>} />
         <Route path="recommend" element={<div>Тут будет Recommend ✨</div>} />
         <Route
@@ -33,17 +33,14 @@ function AppRoutes() {
         <Route path="schedule" element={<div>Тут будет Calendar 📅</div>} />
       </Route>
 
-      {/* Временные заглушки для страниц входа/регистрации */}
       <Route path="/login" element={<div>Страница Login</div>} />
       <Route path="/register" element={<div>Страница Register</div>} />
 
-      {/* Редирект на главную, если роут не найден */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
 
-// Главный компонент, в котором теперь реально используются BrowserRouter и AuthProvider
 export default function App() {
   return (
     <AuthProvider>

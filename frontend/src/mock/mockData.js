@@ -1,32 +1,49 @@
-// src/mock/mockData.js
+let mockPlants = [
+  {
+    id: "plant_1",
+    name: "Монстера деликатная",
+    latin: "Monstera deliciosa",
+    photo_url: null,
+    next_water: new Date().toISOString().slice(0, 10),
+    status: "needs_water",
+  },
+  {
+    id: "plant_2",
+    name: "Кактус опунция",
+    latin: "Opuntia microdasys",
+    photo_url: null,
+    next_water: "2026-06-01",
+    status: "healthy",
+  },
+  {
+    id: "plant_3",
+    name: "Фикус Бенджамина",
+    latin: "Ficus benjamina",
+    photo_url: null,
+    next_water: new Date().toISOString().slice(0, 10),
+    status: "sick",
+  },
+];
 
-export const MOCK_COLLECTION = {
-  plants: [
-    {
-      id: "plant_1",
-      name: "Монстера деликатная",
-      latin: "Monstera deliciosa",
-      photo_url: null,
-      next_water: "2026-05-20",
-      status: "needs_water",
-    },
-    {
-      id: "plant_2",
-      name: "Кактус опунция",
-      latin: "Opuntia microdasys",
-      photo_url: null,
-      next_water: "2026-06-01",
-      status: "healthy",
-    },
-    {
-      id: "plant_3",
-      name: "Фикус Бенджамина",
-      latin: "Ficus benjamina",
-      photo_url: null,
-      next_water: "2026-05-20",
-      status: "sick",
-    },
-  ],
+
+export const getMockCollection = () => ({ plants: [...mockPlants] });
+
+export const addMockPlant = (plantData) => {
+  const newPlant = {
+    id: `plant_${Date.now()}`,
+    name:       plantData.plant_name,
+    latin:      plantData.latin ?? "",
+    photo_url:  plantData.photo_url ?? null,
+    next_water: plantData.next_water ?? new Date().toISOString().slice(0, 10),
+    status:     "healthy",
+  };
+  mockPlants.push(newPlant);
+  return { id: newPlant.id, status: "ok" };
+};
+
+export const deleteMockPlant = (id) => {
+  mockPlants = mockPlants.filter((p) => p.id !== id);
+  return { status: "deleted" };
 };
 
 export const MOCK_IDENTIFY = {
@@ -92,7 +109,14 @@ export const MOCK_SCHEDULE = {
 };
 
 export const MOCK_USER = {
-  name: "Айдэга",
+  name: "Айдэна",
   email: "aidena@example.com",
-  city: "Бишкек",
+  city: "Берлин",
+};
+
+export const MOCK_WEATHER = {
+  city: "Ош",
+  temp: 28,
+  condition: "Ясно",
+  icon: "ti-sun",
 };
