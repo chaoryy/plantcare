@@ -1,0 +1,42 @@
+
+.zone {
+  border: 1.5px dashed #d1d5db;
+  border-radius: var(--radius-lg);
+  padding: 40px 20px;
+  text-align: center;
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.zone:hover, .dragging { border-color: var(--green-dark); background: #f0faf4; }
+.hasPreview            { padding: 12px; }
+
+.zone i    { font-size: 36px; color: #9ca3af; margin-bottom: 10px; display: block; }
+.title     { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 4px; }
+.sub       { font-size: 12px; color: var(--text-gray); }
+
+.preview {
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+.resetBtn {
+  margin-top: 10px;
+  background: none;
+  border: 0.5px solid #d1d5db;
+  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--text-gray);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.resetBtn:hover { border-color: var(--red); color: var(--red); }
+.resetBtn i     { font-size: 13px; }

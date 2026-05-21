@@ -1,0 +1,39 @@
+.title {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.section {
+  color: var(--text-dark);
+  margin-bottom: 14px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.loading {
+  color: var(--text-gray);
+  font-size: 14px;
+}
+.empty {
+  color: var(--text-gray);
+  font-size: 14px;
+}
+.date,
+.sectionTitle {
+  margin-bottom: 10px;
+}
+
+.sectionTitle {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}

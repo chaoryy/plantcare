@@ -1,0 +1,59 @@
+/* src/components/ErrorModal/ErrorModal.module.css */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px 24px;
+  width: 360px;
+  text-align: center;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  background: #fef2f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.icon i { font-size: 22px; color: var(--red); }
+
+.header h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.content p {
+  font-size: 13px;
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+.actions { margin-top: 24px; }
+
+.closeBtn {
+  width: 100%;
+  padding: 10px;
+  background: var(--red);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+}
+.closeBtn:hover { background: #dc2626; }
