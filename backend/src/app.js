@@ -1,13 +1,30 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: 'Слишком много запросов, попробуй позже' },
+});
+
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: { error: 'Лимит AI запросов, подожди минуту' },
+});
+
+app.use(limiter);
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/plants/analyze', aiLimiter);
+app.use('/api/plants/diagnose', aiLimiter);
 
 app.use('/api/auth',   require('./routes/auth'));
 app.use('/api/plants', require('./routes/plants'));
