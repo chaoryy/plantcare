@@ -86,7 +86,36 @@ const diagnose = async (base64, mimeType) => {
 };
 
 const recommend = async (conditions) => {
-  return {};
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1024,
+    messages: [
+      {
+        role: 'user',
+        content: `Ты эксперт по комнатным растениям. Порекомендуй 3 растения исходя из условий.
+Условия: ${JSON.stringify(conditions)}
+Ответь ТОЛЬКО валидным JSON без markdown и без лишнего текста:
+{
+  "recommendations": [
+    {
+      "name": "название на русском",
+      "why": "почему подходит под эти условия",
+      "difficulty": "одно из: лёгкое / среднее / сложное",
+      "safe_for_pets": true или false
+    }
+  ]
+}`,
+      },
+    ],
+  });
+
+  const text = response.content[0].text;
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    const match = text.match(/\{[\s\S]*\}/);
+    return JSON.parse(match[0]);
+  }
 };
 
 module.exports = { identify, diagnose, recommend };
