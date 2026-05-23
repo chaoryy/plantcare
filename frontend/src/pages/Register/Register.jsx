@@ -5,10 +5,13 @@ import { authAPI } from "../../api/client";
 import ErrorModal from "../../components/ErrorModal/ErrorModal";
 import styles from "../../styles/Login.module.css";
 
-export default function Login() {
+export default function Register() {
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -17,8 +20,18 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim() || !password.trim()) {
+
+    if (
+      !firstName.trim() ||
+      !email.trim() ||
+      !city.trim() ||
+      !password.trim()
+    ) {
       setErrorMsg("Заполните все поля.");
+      return;
+    }
+    if (password.length < 8) {
+      setErrorMsg("Пароль должен быть не менее 8 символов.");
       return;
     }
 
@@ -26,11 +39,16 @@ export default function Login() {
     setErrorMsg("");
 
     try {
-      const res = await authAPI.login({ email, password });
+      const res = await authAPI.register({
+        username: firstName.trim(),
+        email,
+        city,
+        password,
+      });
       login(res.data.token);
       navigate("/");
     } catch {
-      setErrorMsg("Неверный email или пароль. Попробуйте ещё раз.");
+      setErrorMsg("Ошибка регистрации. Возможно, этот email уже используется.");
     } finally {
       setLoading(false);
     }
@@ -39,6 +57,7 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
+        {/* Левая панель */}
         <div className={styles.leftPanel}>
           <div className={styles.logo}>
             <i className="ti ti-leaf" aria-hidden="true" />
@@ -46,40 +65,57 @@ export default function Login() {
           </div>
           <div className={styles.promoContent}>
             <h2 className={styles.promoTitle}>
-              Умный уход за твоими растениями
+              Начни заботиться о растениях правильно
             </h2>
             <p className={styles.promoSub}>
-              AI определяет вид по фото, анализирует состояние и составляет
-              персональный график полива с учётом погоды.
+              Создай аккаунт и получи персонального AI-ботаника в кармане.
+              Бесплатно.
             </p>
           </div>
           <div className={styles.features}>
             <div className={styles.featureItem}>
               <div className={styles.featureIcon}>
-                <i className="ti ti-camera" />
+                <i className="ti ti-building-store" />
               </div>
-              <span>Определение вида по фотографии</span>
+              <span>Коллекция всех твоих растений</span>
             </div>
             <div className={styles.featureItem}>
               <div className={styles.featureIcon}>
-                <i className="ti ti-device-laptop" />
+                <i className="ti ti-sun" />
               </div>
-              <span>Диагностика болезней и вредителей</span>
+              <span>Прогноз погоды — полив под климат</span>
             </div>
             <div className={styles.featureItem}>
               <div className={styles.featureIcon}>
-                <i className="ti ti-calendar-event" />
+                <i className="ti ti-bell" />
               </div>
-              <span>График полива с учётом погоды</span>
+              <span>Напоминания о поливе</span>
             </div>
           </div>
         </div>
 
         <div className={styles.rightPanel}>
-          <h1 className={styles.title}>Добро пожаловать</h1>
-          <p className={styles.sub}>Войдите в свой аккаунт, чтобы продолжить</p>
+          <h1 className={styles.title}>Создать аккаунт</h1>
+          <p className={styles.sub}>
+            Уже есть аккаунт?{" "}
+            <Link to="/login" className={styles.link}>
+              Войти
+            </Link>
+          </p>
 
           <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.inputGroup}>
+              <label>Имя</label>
+              <input
+                type="text"
+                placeholder="Алина"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                disabled={loading}
+                required
+              />
+            </div>
+
             <div className={styles.inputGroup}>
               <label>Email</label>
               <input
@@ -93,11 +129,23 @@ export default function Login() {
             </div>
 
             <div className={styles.inputGroup}>
+              <label>Город</label>
+              <input
+                type="text"
+                placeholder="Бишкек"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                disabled={loading}
+                required
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
               <label>Пароль</label>
               <div className={styles.passwordWrapper}>
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Введите пароль"
+                  placeholder="Минимум 8 символов"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
@@ -115,14 +163,8 @@ export default function Login() {
               </div>
             </div>
 
-            <div className={styles.forgotWrapper}>
-              <Link to="/forgot" className={styles.forgotLink}>
-                Забыли пароль?
-              </Link>
-            </div>
-
             <button type="submit" className={styles.btn} disabled={loading}>
-              {loading ? "Входим..." : "Войти"}
+              {loading ? "Создаем..." : "Создать аккаунт"}
             </button>
           </form>
 
@@ -154,21 +196,14 @@ export default function Login() {
                 fill="#EA4335"
               />
             </svg>
-            Продолжить через Google
+            Зарегистрироваться через Google
           </button>
-
-          <p className={styles.footerText}>
-            Нет аккаунта?{" "}
-            <Link to="/register" className={styles.link}>
-              Зарегистрироваться
-            </Link>
-          </p>
         </div>
       </div>
 
       <ErrorModal
         isOpen={errorMsg !== ""}
-        title="Ошибка входа"
+        title="Ошибка регистрации"
         message={errorMsg}
         onClose={() => setErrorMsg("")}
       />
