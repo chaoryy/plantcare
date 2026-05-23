@@ -13,7 +13,7 @@ async function test() {
 
   // 2. Анализ фото
   const formData = new FormData();
-  const filePath = 'C:\\Users\\Victus\\Downloads\\closeup-shot-beautiful-pink-tulips-white-surface.jpg';
+  const filePath = 'C:/Users/Victus/Downloads/closeup-shot-beautiful-pink-tulips-white-surface.jpg';
   const fileBuffer = fs.readFileSync(filePath);
   const blob = new Blob([fileBuffer], { type: 'image/jpeg' });
   formData.append('image', blob, 'plant.jpg');

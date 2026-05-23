@@ -6,7 +6,7 @@ const client = new Anthropic({
 
 const identify = async (base64, mimeType) => {
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-5',
     max_tokens: 1024,
     messages: [
       {
@@ -48,7 +48,7 @@ const identify = async (base64, mimeType) => {
 
 const diagnose = async (base64, mimeType) => {
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-5',
     max_tokens: 1024,
     messages: [
       {
@@ -87,7 +87,7 @@ const diagnose = async (base64, mimeType) => {
 
 const recommend = async (conditions) => {
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-5',
     max_tokens: 1024,
     messages: [
       {
