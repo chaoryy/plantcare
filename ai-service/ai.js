@@ -1,30 +1,43 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const fs = require('fs');
+const Anthropic = require('@anthropic-ai/sdk');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+const client = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
 const identify = async (base64, mimeType) => {
-  const result = await model.generateContent([
-    {
-      inlineData: { data: base64, mimeType: mimeType }
-    },
-    `Ты эксперт по растениям. Определи растение на фото.
-Ответь ТОЛЬКО валидным JSON без markdown:
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: mimeType, data: base64 },
+          },
+          {
+            type: 'text',
+            text: `Ты эксперт по растениям. Внимательно посмотри на фото и определи растение.
+Ответь ТОЛЬКО валидным JSON без markdown и без лишнего текста:
 {
-  "name": "название на русском",
+  "name": "название растения на русском",
   "latin": "латинское название",
-  "confidence": число от 0 до 100,
-  "description": "2-3 предложения на русском",
+  "confidence": число от 0 до 100 насколько ты уверен,
+  "description": "2-3 предложения об этом растении на русском",
   "care": {
-    "water": "как поливать",
-    "light": "какой свет",
-    "temperature": "температура"
+    "water": "как часто поливать",
+    "light": "какое освещение нужно",
+    "temperature": "оптимальная температура"
   }
-}`
-  ]);
+}`,
+          },
+        ],
+      },
+    ],
+  });
 
-  const text = result.response.text();
+  const text = response.content[0].text;
   try {
     return JSON.parse(text);
   } catch (e) {
@@ -34,22 +47,36 @@ const identify = async (base64, mimeType) => {
 };
 
 const diagnose = async (base64, mimeType) => {
-  const result = await model.generateContent([
-    {
-      inlineData: { data: base64, mimeType: mimeType }
-    },
-    `Ты эксперт по болезням растений. Осмотри растение на фото.
-Ответь ТОЛЬКО валидным JSON без markdown:
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: mimeType, data: base64 },
+          },
+          {
+            type: 'text',
+            text: `Ты эксперт по болезням растений. Внимательно осмотри растение на фото.
+Найди признаки болезней, вредителей или других проблем.
+Ответь ТОЛЬКО валидным JSON без markdown и без лишнего текста:
 {
-  "problem": "название проблемы или 'Растение здорово'",
-  "severity": "низкая / средняя / высокая",
-  "symptoms": ["симптом 1", "симптом 2"],
-  "treatment": ["шаг 1", "шаг 2"],
-  "urgent": true или false
-}`
-  ]);
+  "problem": "название проблемы на русском, или 'Растение здорово' если всё хорошо",
+  "severity": "одно из: низкая / средняя / высокая",
+  "symptoms": ["симптом 1", "симптом 2", "симптом 3"],
+  "treatment": ["шаг 1", "шаг 2", "шаг 3"],
+  "urgent": true или false — нужна ли срочная помощь
+}`,
+          },
+        ],
+      },
+    ],
+  });
 
-  const text = result.response.text();
+  const text = response.content[0].text;
   try {
     return JSON.parse(text);
   } catch (e) {
@@ -59,23 +86,30 @@ const diagnose = async (base64, mimeType) => {
 };
 
 const recommend = async (conditions) => {
-  const result = await model.generateContent(
-    `Ты эксперт по комнатным растениям. Порекомендуй 3 растения.
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    messages: [
+      {
+        role: 'user',
+        content: `Ты эксперт по комнатным растениям. Порекомендуй 3 растения исходя из условий.
 Условия: ${JSON.stringify(conditions)}
-Ответь ТОЛЬКО валидным JSON без markdown:
+Ответь ТОЛЬКО валидным JSON без markdown и без лишнего текста:
 {
   "recommendations": [
     {
       "name": "название на русском",
-      "why": "почему подходит",
-      "difficulty": "лёгкое / среднее / сложное",
+      "why": "почему подходит под эти условия",
+      "difficulty": "одно из: лёгкое / среднее / сложное",
       "safe_for_pets": true или false
     }
   ]
-}`
-  );
+}`,
+      },
+    ],
+  });
 
-  const text = result.response.text();
+  const text = response.content[0].text;
   try {
     return JSON.parse(text);
   } catch (e) {
