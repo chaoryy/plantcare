@@ -11,7 +11,7 @@ import {
   MOCK_WEATHER,
 } from "../mock/mockData";
 
-export const USE_MOCK = true;
+export const USE_MOCK = false;
 
 const delay = (ms = 600) => new Promise((res) => setTimeout(res, ms));
 
