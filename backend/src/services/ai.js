@@ -6,7 +6,18 @@ const client = new Anthropic({
 
 const MODEL_NAME = "claude-3-5-sonnet-20241022";
 
+const cleanBase64 = (base64Str) => {
+  if (!base64Str) return "";
+  if (base64Str.includes("base64,")) {
+    return base64Str.split("base64,")[1];
+  }
+  return base64Str;
+};
+
 const identify = async (base64, mimeType) => {
+  const cleanData = cleanBase64(base64);
+  const cleanMimeType = mimeType || "image/jpeg";
+
   const response = await client.messages.create({
     model: MODEL_NAME,
     max_tokens: 1024,
@@ -18,7 +29,11 @@ const identify = async (base64, mimeType) => {
         content: [
           {
             type: "image",
-            source: { type: "base64", media_type: mimeType, data: base64 },
+            source: {
+              type: "base64",
+              media_type: cleanMimeType,
+              data: cleanData,
+            },
           },
           {
             type: "text",
@@ -52,6 +67,9 @@ const identify = async (base64, mimeType) => {
 };
 
 const diagnose = async (base64, mimeType) => {
+  const cleanData = cleanBase64(base64);
+  const cleanMimeType = mimeType || "image/jpeg";
+
   const response = await client.messages.create({
     model: MODEL_NAME,
     max_tokens: 1024,
@@ -63,7 +81,11 @@ const diagnose = async (base64, mimeType) => {
         content: [
           {
             type: "image",
-            source: { type: "base64", media_type: mimeType, data: base64 },
+            source: {
+              type: "base64",
+              media_type: cleanMimeType,
+              data: cleanData,
+            },
           },
           {
             type: "text",
