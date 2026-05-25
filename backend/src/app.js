@@ -2,8 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const rateLimit = require("express-rate-limit");
+const fs = require("fs"); 
+const path = require("path");
 
 dotenv.config();
+
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log(" Папка uploads успешно создана в контейнере!");
+}
 
 const app = express();
 
