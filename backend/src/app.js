@@ -19,6 +19,7 @@ const aiLimiter = rateLimit({
   message: { error: "Лимит AI запросов, подожди минуту" },
 });
 
+app.set("trust proxy", 1);
 app.use(limiter);
 app.use(
   cors({
