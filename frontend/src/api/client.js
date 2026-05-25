@@ -16,8 +16,7 @@ export const USE_MOCK = false;
 const delay = (ms = 600) => new Promise((res) => setTimeout(res, ms));
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
-  timeout: 10000,
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
 });
 
 api.interceptors.request.use((config) => {
@@ -75,7 +74,7 @@ export const plantsAPI = {
     const form = new FormData();
     form.append("image", imageFile);
     form.append("type", "diagnose");
-    return api.post("/api/plants/diagnose", form); 
+    return api.post("/api/plants/diagnose", form);
   },
 
   recommend: async (conditions) => {
@@ -89,7 +88,7 @@ export const plantsAPI = {
   getCollection: async () => {
     if (USE_MOCK) {
       await delay();
-      return { data: getMockCollection() }; 
+      return { data: getMockCollection() };
     }
     return api.get("/api/plants/collection");
   },
@@ -105,7 +104,7 @@ export const plantsAPI = {
   deleteFromCollection: async (id) => {
     if (USE_MOCK) {
       await delay();
-      return { data: deleteMockPlant(id) }; 
+      return { data: deleteMockPlant(id) };
     }
     return api.delete(`/api/plants/collection/${id}`);
   },
