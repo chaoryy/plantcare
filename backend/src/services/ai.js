@@ -4,7 +4,7 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const MODEL_NAME = "claude-3-5-sonnet-20241022";
+const MODEL_NAME = "claude-sonnet-4-5-20250929";
 
 const cleanBase64 = (base64Str) => {
   if (!base64Str) return "";
