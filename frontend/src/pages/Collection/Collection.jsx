@@ -1,4 +1,3 @@
-// src/pages/Collection/Collection.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { plantsAPI } from "../../api/client";
@@ -12,7 +11,7 @@ export default function Collection() {
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState(null);
   const [deleting, setDeleting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null); // ← новый стейт
+  const [errorMsg, setErrorMsg] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {

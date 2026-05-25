@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { weatherAPI } from "../api/client";
 
 const WEATHER_ICONS = {
   Ясно: "ti-sun",
@@ -22,35 +21,22 @@ export function useWeather(city) {
     setLoading(true);
     setError(null);
 
-    weatherAPI
-      .getByCity(city)
-      .then((res) => {
-        const data = res.data;
-        setWeather({
-          ...data,
-          icon: WEATHER_ICONS[data.condition] ?? "ti-cloud",
-        });
-      })
-      .catch(() => setError("Failed to load weather"))
-      .finally(() => setLoading(false));
+    const timer = setTimeout(() => {
+      const mockData = {
+        temp: 24,
+        condition: "Ясно",
+        humidity: 60,
+        city: city,
+      };
 
-    const interval = setInterval(
-      () => {
-        weatherAPI
-          .getByCity(city)
-          .then((res) => {
-            const data = res.data;
-            setWeather({
-              ...data,
-              icon: WEATHER_ICONS[data.condition] ?? "ti-cloud",
-            });
-          })
-          .catch(() => {});
-      },
-      30 * 60 * 1000,
-    );
+      setWeather({
+        ...mockData,
+        icon: WEATHER_ICONS[mockData.condition] ?? "ti-cloud",
+      });
+      setLoading(false);
+    }, 500);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, [city]);
 
   return { weather, loading, error };
