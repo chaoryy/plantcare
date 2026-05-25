@@ -4,7 +4,7 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || process.env.AI_API_KEY,
 });
 
-const MODEL_NAME = "claude-3-5-sonnet-latest";
+const MODEL_NAME = "claude-3-sonnet-20240229";
 
 const identify = async (base64, mimeType) => {
   const response = await client.messages.create({
